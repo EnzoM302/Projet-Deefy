@@ -34,6 +34,9 @@ class Dispatcher {
         case 'register':
             $html = (new action\RegisterAction())();
             break;
+        case 'playlistRender':
+            $html = (new action\playlistAction())();
+            break;
         default:
             $html = (new action\DefaultAction())();
             break;
@@ -53,7 +56,7 @@ class Dispatcher {
         <body>
             <ul>
                 <li><a href="?action=default">Home</a></li>
-                <li><a href="?action=playlist">Display-Playlist</a></li>
+                <li><a href="?action=playlist">Mes Playlists</a></li>
                 <li><a href="?action=add-Playlist">Add-Playlist</a></li>
                 <li><a href="?action=add-Track">Add-Podcast</a></li>
                 <li><a href="?action=auth">Authentification</a></li>

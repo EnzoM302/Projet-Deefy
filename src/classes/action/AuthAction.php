@@ -39,7 +39,7 @@ class AuthAction extends Action{
             }else{
                 throw new AuthException("AUTH ERROR");
             }
-            var_dump($_SESSION);
+            $_SESSION['email'] = $mail;
             return "<p>Authentification réussie pour l'utilisateur : $mail</p>";
         }
     }

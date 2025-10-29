@@ -39,7 +39,7 @@ class RegisterAction extends Action{
             }else{
                 throw new AuthException("REGISTER ERROR");
             }
-            var_dump($_SESSION);
+            $_SESSION['email'] = $mail;
             return "<p>Inscription réussie pour l'utilisateur : $mail</p>";
         }
     }
