@@ -3,35 +3,43 @@
 declare(strict_types=1);
 namespace iutnc\deefy\repository;
 use iutnc\deefy\audio\lists\Playlist;
+use iutnc\deefy\audio\track\AudioTrack;
 use PDO;
 
 class DeefyRepository{
-    private \PDO $pdo;
+    private PDO $pdo;
     private static ?DeefyRepository $instance = null;
-    private static array $config = [ ];
+    private static array $config;
 
     private function __construct(array $conf) {
-        $this->pdo = new \PDO($conf['dsn'], $conf['user'], $conf['pass'],
-        [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]);
+        $this->pdo = new PDO(
+            $conf['dsn'], 
+            $conf['user'], 
+            $conf['pass'],
+            [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
+        );
     }
-    public static function getInstance(){
-        if (is_null(self::$instance)) {
-        self::$instance = new DeefyRepository(self::$config);
+
+    public static function getInstance(): DeefyRepository {
+        if (self::$instance === null) {
+            if (empty(self::$config)) {
+                throw new \Exception("Config not set");
+            }
+            self::$instance = new DeefyRepository(self::$config);
         }
         return self::$instance;
     }
-    public static function setConfig(string $file) {
+
+    public static function setConfig(string $file): void {
         $conf = parse_ini_file($file);
         if ($conf === false) {
-        throw new \Exception("Error reading configuration file");
+            throw new \Exception("Error reading configuration file");
         }
-        $driver = $conf['driver'];
-        $host = $conf['host'];
-        $database = $conf['database'];
-        self::$config = [ 
-            'dsn'=> "$driver:host=$host;dbname=$database;charset=utf8mb4",
-            'user'=> $conf['username'],
-            'pass'=> $conf['password'] ];
+        self::$config = [
+            'dsn' => "{$conf['driver']}:host={$conf['host']};dbname={$conf['database']};charset=utf8mb4",
+            'user' => $conf['username'],
+            'pass' => $conf['password']
+        ];
     }
     // public function findPlaylistById(int $id): Playlist {
     //     return new Playlist();
@@ -67,5 +75,45 @@ class DeefyRepository{
             return ($result['count'] > 0);
      }
 
+     public function getPlaylistsUser(string $email): String {
+            $query = "SELECT playlist.id ,playlist.nom FROM playlist 
+                      JOIN user2playlist ON playlist.id = user2playlist.id_pl
+                      JOIN user ON user2playlist.id_user = user.id
+                      WHERE user.email = :email";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute(['email' => $email]);
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $playlists = "";
+            foreach ($results as $row) {
+                $playlists .= "<a href='?action=playlistRender&id={$row['id']}'>{$row['nom']}</a><br>";
+            }
+            return $playlists;
+
+     }
+
+     public function getTrackPlaylist(int $id_pl, string $nom): Playlist {
+            $query = "SELECT track.titre, track.filename, track.duree
+                      FROM track 
+                      JOIN playlist2track ON track.id = playlist2track.id_track
+                      WHERE playlist2track.id_pl = :id_pl";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute(['id_pl' => $id_pl]);
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $tracks = [];
+            $playlist = new Playlist($nom, $tracks);
+            foreach ($results as $row) {
+                $track = new AudioTrack($row['titre'], $row['filename'], (int)$row['duree']);
+                $playlist->ajouter($track);
+            }
+            return $playlist;
+     }
+
+     public function getNomPlaylist(int $id_pl): string {
+            $query = "SELECT nom FROM playlist WHERE id = :id_pl";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute(['id_pl' => $id_pl]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['nom'];
+     }
 
 }
