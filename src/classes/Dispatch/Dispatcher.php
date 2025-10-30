@@ -37,6 +37,9 @@ class Dispatcher {
         case 'playlistRender':
             $html = (new action\playlistAction())();
             break;
+        case 'deconnect':
+            $html = (new action\DeconnectAction())();
+            break;
         default:
             $html = (new action\DefaultAction())();
             break;
@@ -61,6 +64,7 @@ class Dispatcher {
                 <li><a href="?action=add-Track">Add-Podcast</a></li>
                 <li><a href="?action=auth">Authentification</a></li>
                 <li><a href="?action=register">Inscription</a></li>
+                <li><a href="?action=deconnect">Déconnexion</a></li>
             </ul>
             $content
         </body>
