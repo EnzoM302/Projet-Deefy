@@ -23,7 +23,7 @@ class PodcastRenderer extends AudioTrackRenderer  implements Renderer{
          return <<< HTML
                
                     <p>Titre : {$this->audio->titre}</p>
-                    <p>Nom album : {$this->audio->genre}</p>
+                    <p>Nom podcast : {$this->audio->genre}</p>
                     <p>Duree : {$this->audio->duree}</p>
                     <audio src="{$this->audio->nomFichier}" type="audio/mpeg" controls></audio>
                 HTML;

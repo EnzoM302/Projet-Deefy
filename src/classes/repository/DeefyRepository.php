@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace iutnc\deefy\repository;
 use iutnc\deefy\audio\lists\Playlist;
 use iutnc\deefy\audio\track\AudioTrack;
+use iutnc\deefy\audio\track\AlbumTrack;
+use iutnc\deefy\audio\track\PodcastTrack;
 use PDO;
 
 class DeefyRepository{
@@ -85,14 +87,14 @@ class DeefyRepository{
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $playlists = "";
             foreach ($results as $row) {
-                $playlists .= "<a href='?action=playlistRender&id={$row['id']}'>{$row['nom']}</a><br>";
+                $playlists .= "<a href='?action=playlistRender&id={$row['id']}&nom={$row['nom']}'>{$row['nom']}</a><br>";
             }
             return $playlists;
 
      }
 
      public function getTrackPlaylist(int $id_pl, string $nom): Playlist {
-            $query = "SELECT track.titre, track.filename, track.duree
+            $query = "SELECT track.titre, track.filename, track.duree, track.auteur_podcast, track.titre_album
                       FROM track 
                       JOIN playlist2track ON track.id = playlist2track.id_track
                       WHERE playlist2track.id_pl = :id_pl";
@@ -102,7 +104,11 @@ class DeefyRepository{
             $tracks = [];
             $playlist = new Playlist($nom, $tracks);
             foreach ($results as $row) {
-                $track = new AudioTrack($row['titre'], $row['filename'], (int)$row['duree']);
+                if ($row['auteur_podcast'] !== null) {
+                    $track = new PodcastTrack($row['titre'], $row['filename'],$row['auteur_podcast'] ,(int)$row['duree']);
+                } else {
+                    $track = new AlbumTrack($row['titre'], $row['filename'],$row['titre_album'],$playlist->getNextAlbumTrackNumber(),(int)$row['duree']);
+                }
                 $playlist->ajouter($track);
             }
             return $playlist;

@@ -13,7 +13,6 @@ class AlbumTrackRenderer extends AudioTrackRenderer implements Renderer{
 
     protected function petit():string  {
          return <<< HTML
-               
                     <p>Titre : {$this->audio->titre}</p>
                     <p>Duree : {$this->audio->duree}</p>
                     <audio src="{$this->audio->nomFichier}" controls></audio>

@@ -21,7 +21,7 @@ class AudioListRenderer implements Renderer{
             if ($piste instanceof AlbumTrack) {
                 $trackRenderer = new AlbumTrackRenderer($piste);
             } elseif ($piste instanceof PodcastTrack) {
-                $trackRenderer = new \iutnc\deefy\render\PodcastRenderer($piste);
+                $trackRenderer = new PodcastRenderer($piste);
             } else {
                 continue; 
             }

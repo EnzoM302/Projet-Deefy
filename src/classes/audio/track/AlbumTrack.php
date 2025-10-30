@@ -17,6 +17,9 @@ class AlbumTrack extends AudioTrack{
         $this->numeroPiste = $num;
         $this->album = $album;
     }
+    public function setTrackNumber(int $num): void {
+        $this->numeroPiste = $num;
+    }
 
 
 }

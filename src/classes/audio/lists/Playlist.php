@@ -6,6 +6,8 @@ use iutnc\deefy\audio\track\AudioTrack;
 
 class Playlist extends AudioListe   {
 
+        private int $nextTrack = 0;
+
         public function __construct(String $nom, array $track = [])
         {
             parent::__construct($nom, $track);
@@ -50,6 +52,11 @@ class Playlist extends AudioListe   {
               $res .= $value->__toString()."<br>";
             }
             return $res;
+        }
+
+        public function getNextAlbumTrackNumber(): int {
+            $this->nextTrack++;
+            return $this->nextTrack;
         }
     
 }
