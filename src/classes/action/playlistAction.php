@@ -10,7 +10,6 @@ class PlaylistAction extends Action {
 
     public function __invoke() : string {
         if (isset($_GET['id'])) {
-
             $_SESSION['pl_courante'] = (int) $_GET['id'];
             $nom_pl = DeefyRepository::getInstance()->getNomPlaylist($_SESSION['pl_courante']);
             $playlist = DeefyRepository::getInstance()->getTrackPlaylist($_SESSION['pl_courante'], $nom_pl);
