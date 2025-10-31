@@ -105,7 +105,7 @@ class DeefyRepository{
             $playlist = new Playlist($nom, $tracks);
             foreach ($results as $row) {
                 if ($row['type'] === 'P') {
-                    $track = new PodcastTrack($row['titre'], $row['filename'],$row['auteur_podcast'] ,(int)$row['duree'],$row['genre'],$row['date_posdcast']);
+                    $track = new PodcastTrack($row['titre'], $row['auteur_podcast'],$row['filename'] ,(int)$row['duree'],$row['genre'],$row['date_posdcast']);
                 } else {
                     $track = new AlbumTrack($row['titre'], $row['filename'],$row['titre_album'],$playlist->getNextAlbumTrackNumber(),(int)$row['duree'],(int)$row['numero_album'],$row['artiste_album'],(int)$row['annee_album'],$row['genre']);
                 }
