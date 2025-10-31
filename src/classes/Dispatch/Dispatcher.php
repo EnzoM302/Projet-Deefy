@@ -23,7 +23,7 @@ class Dispatcher {
             $html = (new action\AddPlaylistAction())();
             break;
         case 'add-Track':
-            $html = (new action\AddPodcastTrackAction())();
+            $html = (new action\addTrack())();
             break;
         case 'add-PodTrack':
             $html = (new action\AddPodcastTrackAction())();

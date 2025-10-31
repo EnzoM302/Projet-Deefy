@@ -94,7 +94,7 @@ class DeefyRepository{
      }
 
      public function getTrackPlaylist(int $id_pl, string $nom): Playlist {
-            $query = "SELECT track.titre, track.filename, track.duree, track.auteur_podcast, track.titre_album
+            $query = "SELECT *
                       FROM track 
                       JOIN playlist2track ON track.id = playlist2track.id_track
                       WHERE playlist2track.id_pl = :id_pl";
@@ -104,13 +104,14 @@ class DeefyRepository{
             $tracks = [];
             $playlist = new Playlist($nom, $tracks);
             foreach ($results as $row) {
-                if ($row['auteur_podcast'] !== null) {
-                    $track = new PodcastTrack($row['titre'], $row['filename'],$row['auteur_podcast'] ,(int)$row['duree']);
+                if ($row['type'] === 'P') {
+                    $track = new PodcastTrack($row['titre'], $row['filename'],$row['auteur_podcast'] ,(int)$row['duree'],$row['genre'],$row['date_posdcast']);
                 } else {
-                    $track = new AlbumTrack($row['titre'], $row['filename'],$row['titre_album'],$playlist->getNextAlbumTrackNumber(),(int)$row['duree']);
+                    $track = new AlbumTrack($row['titre'], $row['filename'],$row['titre_album'],$playlist->getNextAlbumTrackNumber(),(int)$row['duree'],(int)$row['numero_album'],$row['artiste_album'],(int)$row['annee_album'],$row['genre']);
                 }
                 $playlist->ajouter($track);
             }
+            $_SESSION['playlists'] = $playlist;
             return $playlist;
      }
 
@@ -121,5 +122,62 @@ class DeefyRepository{
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             return $result['nom'];
      }
+
+    public function AjouterTrackPlaylist(int $id_pl, AudioTrack $track): void {
+
+    $query = "INSERT INTO track (titre, genre, duree, filename, type, artiste_album, titre_album, annee_album, numero_album, auteur_podcast, date_posdcast)
+              VALUES (:titre, :genre, :duree, :filename, :type, :artiste_album, :titre_album, :annee_album, :numero_album, :auteur_podcast, :date_posdcast)";
+
+    $stmt = $this->pdo->prepare($query);
+
+    $type = $track instanceof PodcastTrack ? 'P' : 'A';
+
+    $params = [
+        'titre' => $track->titre,
+        'genre' => $track->genre,
+        'duree' => $track->duree,
+        'filename' => $track->nomFichier,
+        'type' => $type,
+        'artiste_album' => null,
+        'titre_album' => null,
+        'annee_album' => null,
+        'numero_album' => null,
+        'auteur_podcast' => null,
+        'date_posdcast' => null
+    ];
+
+    if ($track instanceof AlbumTrack) {
+        $params['artiste_album'] = $track->artiste;
+        $params['titre_album'] = $track->album;
+        $params['annee_album'] = $track->annee;
+        $params['numero_album'] = $track->numeroPiste;
+    } else {
+        $params['auteur_podcast'] = $track->artiste;
+        $params['date_posdcast'] = $track->date;
+    }
+
+    $stmt->execute($params);
+
+    $track_id = (int) $this->pdo->lastInsertId();
+    $query2 = "INSERT INTO playlist2track (id_pl, id_track) VALUES (:id_pl, :id_track)";
+    $stmt2 = $this->pdo->prepare($query2);
+    $stmt2->execute(['id_pl' => $id_pl, 'id_track' => $track_id]);
+}
+
+
+     
+
+// id
+// titre
+// genre
+// duree
+// filename
+// type
+// artiste_album
+// titre_album
+// annee_album
+// numero_album
+// auteur_podcast
+// date_posdcast
 
 }

@@ -7,15 +7,18 @@ use iutnc\deefy\exception\InvalidProprietyException;
 class AudioTrack{
     protected string $titre;
     protected string $artiste;
-    protected int $annee;
+    protected string $annee;
     protected string $genre;
     protected int $duree;
     protected string $nomFichier;
 
-    public function __construct(string $titre, string $nomFichier, int $duree){
+    public function __construct(string $titre, string $nomFichier, int $duree, string $artiste, string $annee, string $genre){
         $this->titre = $titre;
         $this->nomFichier = $nomFichier;
         $this->duree = $duree;
+        $this->artiste = $artiste;
+        $this->annee = $annee;
+        $this->genre = $genre;
     }
 
 

@@ -10,12 +10,12 @@ class PlaylistAction extends Action {
 
     public function __invoke() : string {
         if (isset($_GET['id'])) {
-            $_SESSION['pl_courante'] = (int) $_GET['id'];
-            $nom_pl = DeefyRepository::getInstance()->getNomPlaylist($_SESSION['pl_courante']);
-            $playlist = DeefyRepository::getInstance()->getTrackPlaylist($_SESSION['pl_courante'], $nom_pl);
+            $_SESSION['id_courant'] = (int) $_GET['id'];
+            $nom_pl = DeefyRepository::getInstance()->getNomPlaylist($_SESSION['id_courant']);
+            $playlist = DeefyRepository::getInstance()->getTrackPlaylist($_SESSION['id_courant'], $nom_pl);
             $renderer = new AudioListRenderer($playlist);
             $rendu = $renderer->render(2);
-            $rendu .= '<a href="?action=add-Podcast">Ajouter une Podcast</a> <br>';
+            $rendu .= '<a href="?action=add-PodTrack">Ajouter une Podcast</a> <br>';
             $rendu .= '<a href="?action=add-Track">Ajouter une musique</a>';
             return $rendu;
         } else {

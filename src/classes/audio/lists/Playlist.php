@@ -32,6 +32,7 @@ class Playlist extends AudioListe   {
                 $this->track = array_values($this->track);
                 $this->nbPistes--;
                 $this->dureeTot -= $piste;
+                $this->nextTrack--;
             }
         }
 
