@@ -20,7 +20,7 @@ class addTrack extends Action {
                 <title>Ajouter une piste</title>
             </head>
             <body>
-                <h1>Add Playlist</h1>
+                <h1>Add Track</h1>
                 <form action="?action=add-Track" method="post" enctype="multipart/form-data">
                     <label for="titre">Titre : </label>
                     <input type="text" id="titre" name="titre" required><br>
@@ -62,7 +62,7 @@ class addTrack extends Action {
 
         $chemin = $uploadDir . $file_hash . '.mp3';
         $cheminWeb = "/web/ProjetDeefy/Projet-Deefy/Upload/Musique/" . $file_hash . '.mp3';
-        $pl_id = $_SESSION['pl_courante'];
+        $pl_id = $_SESSION['id_courant'];
 
         if ($_FILES['file']['type'] === 'audio/mpeg' && substr($_FILES['file']['name'], -4) === '.mp3') {
 
