@@ -164,20 +164,39 @@ class DeefyRepository{
     $stmt2->execute(['id_pl' => $id_pl, 'id_track' => $track_id]);
 }
 
+    public function SupprimerTrackPlaylist(int $id_pl, int $id_track): void {
+            $query = "DELETE FROM playlist2track WHERE id_pl = :id_pl AND id_track = :id_track";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute(['id_pl' => $id_pl, 'id_track' => $id_track]);
+    }
 
-     
+    public function getIdTrack(AudioTrack $track): ?int {
+            $query = "SELECT id FROM track WHERE titre = :titre AND filename = :filename LIMIT 1";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute(['titre' => $track->titre, 'filename' => $track->nomFichier]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result ? (int)$result['id'] : null;
+    }
 
-// id
-// titre
-// genre
-// duree
-// filename
-// type
-// artiste_album
-// titre_album
-// annee_album
-// numero_album
-// auteur_podcast
-// date_posdcast
+    public function getAllTrackPlaylist(int $id_pl): array {
+        $query = "SELECT track.*
+                  FROM track 
+                  JOIN playlist2track ON track.id = playlist2track.id_track
+                  WHERE playlist2track.id_pl = :id_pl";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['id_pl' => $id_pl]);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $tracks = [];
+        foreach ($results as $row) {
+            if ($row['type'] === 'P') {
+                $track = new PodcastTrack($row['titre'], $row['auteur_podcast'],$row['filename'] ,(int)$row['duree'],$row['genre'],$row['date_posdcast']);
+            } else {
+                $track = new AlbumTrack($row['titre'], $row['filename'],$row['titre_album'],(int)$row['numero_album'],(int)$row['duree'],(int)$row['numero_album'],$row['artiste_album'],(int)$row['annee_album'],$row['genre']);
+            }
+            $tracks[] = $track;
+        }
+        return $tracks;
+    }
+
 
 }

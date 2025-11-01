@@ -40,6 +40,9 @@ class Dispatcher {
         case 'deconnect':
             $html = (new action\DeconnectAction())();
             break;
+        case 'supprimerTrack':
+            $html = (new action\SupprTrackAction())();
+            break;
         default:
             $html = (new action\DefaultAction())();
             break;
