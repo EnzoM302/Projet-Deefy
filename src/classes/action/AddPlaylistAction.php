@@ -9,6 +9,12 @@ use iutnc\deefy\repository\DeefyRepository;
 
 class AddPlaylistAction extends Action {
     public function __invoke() : string {
+
+        if (!isset($_SESSION['user'])) {
+            
+            return "<p> Vous devez être connecté pour créer une playlist. </p>";
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             return <<<HTML
             <html lang="fr">
@@ -26,18 +32,24 @@ class AddPlaylistAction extends Action {
             </body>
             </html>
             HTML;
-        }else{
+        }else if($_SERVER['REQUEST_METHOD'] === 'POST'){
+
+            $userEmail = $_SESSION['user'];
             $name = filter_var($_POST['name'], FILTER_SANITIZE_SPECIAL_CHARS);
             $playlist = new lists\Playlist($name);
-            $_SESSION['playlists'] = $playlist;
 
             $r = DeefyRepository::getInstance();
-            $playlist = $r->saveEmptyPlaylist($playlist);
+            $playlist = $r->saveEmptyPlaylist($playlist, $userEmail);
+            $_SESSION['id_courant'] = $playlist;
+
+
             $renderer = new AudioListRenderer($playlist);
             $rendu  = $renderer->render(2);
+            $rendu .= '<h2>Playlist "' . $name . '" créée avec succès !</h2>';
             $rendu .= '<a href="?action=add-Track">Ajouter une piste</a>';
             return $rendu;
         }
+        return "Méthode non autorisée.";
     }
 
 }
