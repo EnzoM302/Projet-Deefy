@@ -62,7 +62,7 @@ class addTrack extends Action {
 
         $chemin = $uploadDir . $file_hash . '.mp3';
         $cheminWeb = "/web/ProjetDeefy/Projet-Deefy/Upload/Musique/" . $file_hash . '.mp3';
-        $pl_id = $_SESSION['pl_courante'];
+        $pl_id = $_SESSION['id_courant'];
 
         if ($_FILES['file']['type'] === 'audio/mpeg' && substr($_FILES['file']['name'], -4) === '.mp3') {
 

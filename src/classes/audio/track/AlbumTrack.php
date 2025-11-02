@@ -9,7 +9,7 @@ class AlbumTrack extends AudioTrack{
     protected int $numeroPiste;
     protected int $numeroAlbum;
     public function __construct(string $titre, string $chemin,string $album, int $num, int $duree, int $numeroAlbum, string $artiste, int $annee, string $genre){
-        if ($duree <0) {
+        if ($duree <0) {    
             throw new InvalidPropertyValueException("Erreur durée à 0");
             
         }

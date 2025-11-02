@@ -155,7 +155,13 @@ class DeefyRepository{
         $params['auteur_podcast'] = $track->artiste;
         $params['date_posdcast'] = $track->date;
     }
-
+    if (self::getInstance()->verifTrackExist($track)) {
+        $track_id = (int) $this->pdo->lastInsertId();
+        $query2 = "INSERT INTO playlist2track (id_pl, id_track) VALUES (:id_pl, :id_track)";
+        $stmt2 = $this->pdo->prepare($query2);
+        $stmt2->execute(['id_pl' => $id_pl, 'id_track' => $track_id]);
+        return;
+    }
     $stmt->execute($params);
 
     $track_id = (int) $this->pdo->lastInsertId();
@@ -163,6 +169,13 @@ class DeefyRepository{
     $stmt2 = $this->pdo->prepare($query2);
     $stmt2->execute(['id_pl' => $id_pl, 'id_track' => $track_id]);
 }
+    public function verifTrackExist(AudioTrack $track): bool {
+        $query = "SELECT COUNT(*) as count FROM track WHERE filename = :filename";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['filename' => $track->nomFichier]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return ($result['count'] > 0);
+    }
 
     public function SupprimerTrackPlaylist(int $id_pl, int $id_track): void {
             $query = "DELETE FROM playlist2track WHERE id_pl = :id_pl AND id_track = :id_track";
