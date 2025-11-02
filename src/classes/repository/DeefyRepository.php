@@ -46,12 +46,43 @@ class DeefyRepository{
     // public function findPlaylistById(int $id): Playlist {
     //     return new Playlist();
     // }
-    public function saveEmptyPlaylist(Playlist $pl): Playlist {
-            $query = "INSERT INTO playlist (nom) VALUES (:nom)";
-            $stmt = $this->pdo->prepare($query);
-            $stmt->execute(['nom' => $pl->nom]);
-            $pl->setID((int) $this->pdo->lastInsertId());
+
+    public function getUserIdByEmail(string $email): ?int {
+        $query = "SELECT id FROM User WHERE email = :email";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['email' => $email]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? (int)$result['id'] : null;
+    }
+    
+    public function saveEmptyPlaylist(Playlist $pl, string $userEmail): Playlist {
+        $userId = $this->getUserIdByEmail($userEmail);
+        if ($userId === null) {
+            //Ne doit pas arriver
+            return null;
+        }
+
+        try {
+            $this->pdo->beginTransaction();
+
+            $queryPl = "INSERT INTO playlist (nom) VALUES (:nom)";
+            $stmtPl = $this->pdo->prepare($queryPl);
+            $stmtPl->execute(['nom' => $pl->nom]);
+            $playlistId = (int) $this->pdo->lastInsertId();
+            $pl->setID($playlistId); 
+
+            $queryLink = "INSERT INTO user2playlist (id_user, id_pl) VALUES (:id_user, :id_pl)";
+            $stmtLink = $this->pdo->prepare($queryLink);
+            $stmtLink->execute(['id_user' => $userId, 'id_pl' => $playlistId]);
+
+            $this->pdo->commit();
+
             return $pl;
+
+        } catch (\PDOException $e) {
+            $this->pdo->rollBack();
+            return null;
+        }
         
      }
     public function getHashUser(String $email): ?String {
