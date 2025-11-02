@@ -43,6 +43,9 @@ class Dispatcher {
         case 'supprimerTrack':
             $html = (new action\SupprTrackAction())();
             break;
+        case 'Choice-Track':
+            $html = (new action\ChoiceTrackAction())();
+            break;
         default:
             $html = (new action\DefaultAction())();
             break;
@@ -64,7 +67,6 @@ class Dispatcher {
                 <li><a href="?action=default">Home</a></li>
                 <li><a href="?action=playlist">Mes Playlists</a></li>
                 <li><a href="?action=add-Playlist">Add-Playlist</a></li>
-                <li><a href="?action=add-Track">Add-Podcast</a></li>
                 <li><a href="?action=auth">Authentification</a></li>
                 <li><a href="?action=register">Inscription</a></li>
                 <li><a href="?action=deconnect">Déconnexion</a></li>

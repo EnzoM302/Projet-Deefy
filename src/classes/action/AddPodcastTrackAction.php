@@ -41,6 +41,7 @@ class AddPodcastTrackAction extends Action {
                     <input type="date" id="date" name="date" required><br>
                     <input type="submit" value="Ajouter Podcast">
                 </form>
+                <a href="?action=Choice-Track">Choisir une piste existante</a>
             </body>
             </html>
             HTML;

@@ -12,6 +12,14 @@ class addTrack extends Action {
 
     public function __invoke(): string {
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+            $track_list = DeefyRepository::getInstance()->getAllTrack();
+
+            $options = '';
+            foreach ($track_list as $track) {
+                $id = htmlspecialchars(DeefyRepository::getInstance()->getIdTrack($track));
+                $titre = htmlspecialchars($track->titre);
+                $options .= "<option value=\"$id\">$titre</option>";
+            }
             return <<<HTML
             <html lang="fr">
             <head>
@@ -28,8 +36,13 @@ class addTrack extends Action {
                     <input type="text" id="genre" name="genre" required><br>
                     <label for="artist">Auteur : </label>
                     <input type="text" id="artist" name="artist" required><br>
-                    <label for="file">Fichier : </label>
-                    <input type="file" id="file" name="file" required><br>
+                    <label for="file">Upload Fichier : </label>
+                    <input type="file" id="file" name="file"><br>
+                    <label for="musique">Choisir une musique existante : </label>
+                    <select id="musique" name="musique">
+                        <option value="">-- Sélectionner une musique --</option>
+                        $options
+                    </select><br>
                     <label for="album">Album : </label>
                     <input type="text" id="album" name="album" required><br>
                     <label for="numero_album">Numéro de l'album : </label>
@@ -38,13 +51,10 @@ class addTrack extends Action {
                     <input type="date" id="Annee" name="Annee" required><br>
                     <input type="submit" value="Ajouter Musique">
                 </form>
+                <a href="?action=Choice-Track">Choisir une piste existante</a>
             </body>
             </html>
             HTML;
-        }
-
-        if (!isset($_FILES['file']) || $_FILES['file']['error'] !== UPLOAD_ERR_OK) {
-            return "Erreur : Aucun fichier n'a été téléchargé.";
         }
 
         $getID3 = new \getID3;

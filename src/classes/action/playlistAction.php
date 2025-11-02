@@ -15,12 +15,12 @@ class PlaylistAction extends Action {
             $playlist = DeefyRepository::getInstance()->getTrackPlaylist($_SESSION['id_courant'], $nom_pl);
             $renderer = new AudioListRenderer($playlist);
             $rendu = $renderer->render(2);
-            $rendu .= '<a href="?action=add-PodTrack">Ajouter une Podcast</a> <br>';
+            $rendu .= '<a href="?action=add-PodTrack">Ajouter un Podcast</a> <br>';
             $rendu .= '<a href="?action=add-Track">Ajouter une musique</a> <br>';
             $rendu .= '<a href="?action=supprimerTrack">Supprimer une track</a>';
             return $rendu;
         } else {
-            return "<p>Aucune track disponible. Veuillez en créer une d'abord.</p>";
+            return "<p>Aucune track disponible. Veuillez vous connectez ou créer un compte.</p>";
         }
     }
 

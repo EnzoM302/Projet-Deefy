@@ -124,6 +124,31 @@ class DeefyRepository{
 
      }
 
+     public function getAllTrack(): array {
+            $query = "SELECT * FROM track WHERE type = 'A'";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute();
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $tracks = [];
+            foreach ($results as $row) {
+                $track = new AlbumTrack($row['titre'], $row['filename'],$row['titre_album'],(int)$row['numero_album'],(int)$row['duree'],(int)$row['numero_album'],$row['artiste_album'],(int)$row['annee_album'],$row['genre']);
+                $tracks[] = $track;
+            }
+            return $tracks;
+     }
+     public function getAllPodcast(): array {
+            $query = "SELECT * FROM track WHERE type = 'P'";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute();
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $tracks = [];
+            foreach ($results as $row) {
+                $track = new PodcastTrack($row['titre'], $row['auteur_podcast'],$row['filename'] ,(int)$row['duree'],$row['genre'],$row['date_posdcast']);
+                $tracks[] = $track;
+            }
+            return $tracks;
+     }
+
      public function getTrackPlaylist(int $id_pl, string $nom): Playlist {
             $query = "SELECT *
                       FROM track 
@@ -187,7 +212,7 @@ class DeefyRepository{
         $params['date_posdcast'] = $track->date;
     }
     if (self::getInstance()->verifTrackExist($track)) {
-        $track_id = (int) $this->pdo->lastInsertId();
+        $track_id = self::getInstance()->getIdTrack($track);
         $query2 = "INSERT INTO playlist2track (id_pl, id_track) VALUES (:id_pl, :id_track)";
         $stmt2 = $this->pdo->prepare($query2);
         $stmt2->execute(['id_pl' => $id_pl, 'id_track' => $track_id]);
@@ -212,6 +237,21 @@ class DeefyRepository{
             $query = "DELETE FROM playlist2track WHERE id_pl = :id_pl AND id_track = :id_track";
             $stmt = $this->pdo->prepare($query);
             $stmt->execute(['id_pl' => $id_pl, 'id_track' => $id_track]);
+    }
+
+    public function getTrack(int $id_track): ?AudioTrack {
+            $query = "SELECT * FROM track WHERE id = :id_track LIMIT 1";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute(['id_track' => $id_track]);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($row) {
+                if ($row['type'] === 'P') {
+                    return new PodcastTrack($row['titre'], $row['auteur_podcast'],$row['filename'] ,(int)$row['duree'],$row['genre'],$row['date_posdcast']);
+                } else {
+                    return new AlbumTrack($row['titre'], $row['filename'],$row['titre_album'],(int)$row['numero_album'],(int)$row['duree'],(int)$row['numero_album'],$row['artiste_album'],(int)$row['annee_album'],$row['genre']);
+                }
+            }
+            return null;
     }
 
     public function getIdTrack(AudioTrack $track): ?int {
