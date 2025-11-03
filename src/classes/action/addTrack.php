@@ -30,25 +30,42 @@ class addTrack extends Action {
             <body>
                 <h1>Add Track</h1>
                 <form action="?action=add-Track" method="post" enctype="multipart/form-data">
-                    <label for="titre">Titre : </label>
-                    <input type="text" id="titre" name="titre" required><br>
-                    <label for="genre">Genre : </label>
-                    <input type="text" id="genre" name="genre" required><br>
-                    <label for="artist">Auteur : </label>
-                    <input type="text" id="artist" name="artist" required><br>
-                    <label for="file">Upload Fichier : </label>
-                    <input type="file" id="file" name="file"><br>
-                    <label for="musique">Choisir une musique existante : </label>
-                    <select id="musique" name="musique">
+                    <div class="form-group">
+                        <label for="titre">Titre : </label>
+                        <input type="text" id="titre" name="titre" required><br>
+                    </div>
+                    <div class="form-group">
+                        <label for="genre">Genre : </label>
+                        <input type="text" id="genre" name="genre" required><br>
+                    </div>
+                    <div class="form-group">
+                        <label for="artist">Auteur : </label>
+                        <input type="text" id="artist" name="artist" required><br>
+                    </div>
+                    <div class="form-group">
+                        <label for="file">Upload Fichier : </label>
+                        <input type="file" id="file" name="file"><br>
+                    </div>
+                    <div class="form-group">
+                        <label for="musique">Choisir une musique existante : </label>
+                        <select id="musique" name="musique">
                         <option value="">-- Sélectionner une musique --</option>
                         $options
-                    </select><br>
-                    <label for="album">Album : </label>
-                    <input type="text" id="album" name="album" required><br>
-                    <label for="numero_album">Numéro de l'album : </label>
-                    <input type="number" id="numero_album" name="numero_album" required><br>
-                    <label for="Annee">Année : </label>
-                    <input type="date" id="Annee" name="Annee" required><br>
+                        </select><br>
+                    </div>
+                    <div class="form-group">
+                        <label for="album">Album : </label>
+                        <input type="text" id="album" name="album" required><br>
+                    </div>
+                    <div class="form-group">
+                        <label for="numero_album">Numéro de l'album : </label>
+                        <input type="number" id="numero_album" name="numero_album" required><br>
+                    </div>
+                    <div class="form-group">
+                        <label for="Annee">Année : </label>
+                        <input type="date" id="Annee" name="Annee" required><br>
+                    </div>
+                    
                     <input type="submit" value="Ajouter Musique">
                 </form>
                 <a href="?action=Choice-Track">Choisir une piste existante</a>
