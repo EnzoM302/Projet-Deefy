@@ -35,7 +35,11 @@ class RegisterAction extends Action{
         }else{
             $mail = $_POST['email'];
             if (filter_var($mail, FILTER_VALIDATE_EMAIL)) {
-                AuthProvider::register($mail, $_POST['mdp']);
+                try{
+                    AuthProvider::register($mail, $_POST['mdp']);
+                } catch(AuthException $e) {
+                    return "<p class='center'>Erreur lors de l'inscription (Mot de passe Invalide ou utilisateur déjà existant)</p><a href='?action=auth'>Se reconnecter</a>";
+                }
             }else{
                 throw new AuthException("REGISTER ERROR");
             }

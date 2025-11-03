@@ -35,9 +35,13 @@ class AuthAction extends Action{
         }else{
             $mail = $_POST['email'];
             if (filter_var($mail, FILTER_VALIDATE_EMAIL)) {
-                AuthProvider::signin($mail, $_POST['mdp']);
+                try{
+                    AuthProvider::signin($mail, $_POST['mdp']);
+                } catch(AuthException $e) {
+                    return "<p class='center'>email ou mot de passe incorrect</p><a href='?action=auth'>Se reconnecter</a>";
+                }
             }else{
-                throw new AuthException("AUTH ERROR");
+                return "<p class='center'>email incorrect</p><a href='?action=auth'>Se reconnecter</a>";
             }
             $_SESSION['email'] = $mail;
             return "<p class='center'>Authentification réussie pour l'utilisateur : $mail</p>";

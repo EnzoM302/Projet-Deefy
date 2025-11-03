@@ -8,7 +8,7 @@ class AuthProvider {
     public static function signin(string $email,string $passwd2check): void {
         $hash = DeefyRepository::getInstance()->getHashUser($email);
         if (!password_verify($passwd2check, $hash))
-            throw new AuthException("AUTH ERROR");
+            throw new AuthException("MOT DE PASSE OU EMAIL INCORRECTE");
         $_SESSION['user'] = $email;
     }
     public static function register(string $email,string $pass): void {
