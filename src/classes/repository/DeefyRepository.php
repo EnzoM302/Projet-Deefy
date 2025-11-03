@@ -213,9 +213,10 @@ class DeefyRepository{
     }
     if (self::getInstance()->verifTrackExist($track)) {
         $track_id = self::getInstance()->getIdTrack($track);
-        $query2 = "INSERT INTO playlist2track (id_pl, id_track) VALUES (:id_pl, :id_track)";
+        $playlist = self::getInstance()->getTrackPlaylist($id_pl, $this->getNomPlaylist($id_pl));
+        $query2 = "INSERT INTO playlist2track (id_pl, id_track, no_piste_dans_liste) VALUES (:id_pl, :id_track, :no_piste_dans_liste)";
         $stmt2 = $this->pdo->prepare($query2);
-        $stmt2->execute(['id_pl' => $id_pl, 'id_track' => $track_id]);
+        $stmt2->execute(['id_pl' => $id_pl, 'id_track' => $track_id, 'no_piste_dans_liste' => $playlist->getNextAlbumTrackNumber()]);
         return;
     }
     $stmt->execute($params);
@@ -281,6 +282,4 @@ class DeefyRepository{
         }
         return $tracks;
     }
-
-
 }
