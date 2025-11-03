@@ -15,8 +15,9 @@ class DefaultAction extends Action {
                 $playlist = DeefyRepository::getInstance()->getTrackPlaylist($_SESSION['id_courant'], $nom_pl);
                 $renderer = new AudioListRenderer($playlist);
                 $html .= $renderer->render(2);
+            } else{
+                $html = "<p class='center'>Auncune Playlist n'a été selectionné</p>";
             }
-            
         }else{
             $html = "<h1>Bienvenu sur Deefy !</h1>";
             $html .= "<p class='center'>Veuillez vous connecter</p>";
