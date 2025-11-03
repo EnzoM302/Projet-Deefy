@@ -62,7 +62,7 @@ class DeefyRepository{
             return null;
         }
 
-        try {
+        
             $this->pdo->beginTransaction();
 
             $queryPl = "INSERT INTO playlist (nom) VALUES (:nom)";
@@ -79,10 +79,7 @@ class DeefyRepository{
 
             return $pl;
 
-        } catch (\PDOException $e) {
-            $this->pdo->rollBack();
-            return null;
-        }
+
         
      }
     public function getHashUser(String $email): ?String {
@@ -118,7 +115,7 @@ class DeefyRepository{
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $playlists = "";
             foreach ($results as $row) {
-                $playlists .= "<a href='?action=playlistRender&id={$row['id']}&nom={$row['nom']}'>{$row['nom']}</a><br>";
+                $playlists .= "<a href='?action=playlistRender&id={$row['id']}&nom={$row['nom']}'>{$row['nom']}</a>";
             }
             return $playlists;
 

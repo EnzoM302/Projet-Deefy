@@ -40,7 +40,7 @@ class RegisterAction extends Action{
                 throw new AuthException("REGISTER ERROR");
             }
             $_SESSION['email'] = $mail;
-            return "<p>Inscription réussie pour l'utilisateur : $mail</p>";
+            return "<p class='center'>Inscription réussie pour l'utilisateur : $mail</p>";
         }
     }
 

@@ -13,9 +13,10 @@ class DisplayPlaylist extends Action {
             // $renderer = new AudioListRenderer($playlist);
             // $rendu .= '<a href="?action=add-Podcast">Ajouter une Podcast</a> <br>';
             // $rendu .= '<a href="?action=add-Track">Ajouter une musique</a>';
-            return $playlist;
+            $html = "<div class='playlist-list'>" . $playlist . "</div>";
+            return $html;
         } else {
-            return "<p>Aucune playlist disponible. Veuillez en créer une d'abord.</p>";
+            return "<p class='center'>Aucune playlist disponible. Veuillez en créer une d'abord.</p>";
         }
     }
 

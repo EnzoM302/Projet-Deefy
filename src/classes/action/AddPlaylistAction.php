@@ -12,7 +12,7 @@ class AddPlaylistAction extends Action {
 
         if (!isset($_SESSION['user'])) {
             
-            return "<p> Vous devez être connecté pour créer une playlist. </p>";
+            return "<p class='center'> Vous devez être connecté pour créer une playlist. </p>";
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -21,10 +21,10 @@ class AddPlaylistAction extends Action {
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Document</title>
+                <title>Ajout Playlist</title>
             </head>
             <body>
-                <h1>Add Playlist</h1>
+                <h1>Ajouter une Playlist</h1>
                 <form action="?action=add-Playlist" method="post">
                     <label for="name">Nom de la playlist:</label>
                     <input type="text" id="name" name="name" required>

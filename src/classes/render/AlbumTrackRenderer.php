@@ -22,11 +22,12 @@ class AlbumTrackRenderer extends AudioTrackRenderer implements Renderer{
     protected function grand():string  {
         if ($this->audio instanceof AlbumTrack) {
             return <<< HTML
-                  
-                       <p>Titre : {$this->audio->titre}</p>
+                    <div class="track-item">
+                       <p class="track-title">Titre : {$this->audio->titre}</p>
                        <p>Nom album : {$this->audio->album}</p>
                        <p>Duree : {$this->audio->duree}</p>
                        <audio src="{$this->audio->nomFichier}" controls></audio>
+                    </div>
                    HTML;
         }
         return "<p>Titre : {$this->audio->titre}</p>";

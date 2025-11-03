@@ -41,7 +41,7 @@ class SupprTrackAction extends Action{
             $id_pl = (int) $_POST['id_pl'];
                 $id_track = (int) $_POST['id_track'];
             DeefyRepository::getInstance()->SupprimerTrackPlaylist($id_pl, $id_track);
-            return "<p>Piste supprimée avec succès de la playlist.</p><a href=\"?action=playlist&id=$id_pl\">Retour à la playlist</a>";
+            return "<p class='center'>Piste supprimée avec succès de la playlist.</p><a href=\"?action=playlist&id=$id_pl\">Retour à la playlist</a>";
         }
     }
 }

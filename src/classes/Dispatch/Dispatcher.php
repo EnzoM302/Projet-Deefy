@@ -63,17 +63,23 @@ class Dispatcher {
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link rel="stylesheet" href="css/style.css">
             <title>Deefy App</title>
         </head>
         <body>
-            <ul>
-                <li><a href="?action=default">Home</a></li>
-                <li><a href="?action=playlist">Mes Playlists</a></li>
-                <li><a href="?action=add-Playlist">Add-Playlist</a></li>
-                <li><a href="?action=auth">Authentification</a></li>
-                <li><a href="?action=register">Inscription</a></li>
-                <li><a href="?action=deconnect">Déconnexion</a></li>
-            </ul>
+            <header class="container">
+            <h1>DEEFY</h1>
+            <nav>
+                
+                    <a href="?action=default">Home</a>
+                    <a href="?action=playlist">Mes Playlists</a>
+                    <a href="?action=add-Playlist">Ajouter Playlist</a>
+                    <a href="?action=auth">Authentification</a>
+                    <a href="?action=register">Inscription</a>
+                    <a href="?action=deconnect">Déconnexion</a>
+                
+            </nav>    
+            </header>
             $content
         </body>
         </html> 

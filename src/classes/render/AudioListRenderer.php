@@ -29,8 +29,12 @@ class AudioListRenderer implements Renderer{
         }
 
         $html .= "</ul>\n";
+
+        $html .= "<div class='audiolist-footer'>\n";
         $html .= "<p><strong>Nombre de pistes :</strong> {$this->audiolist->nbPistes}</p>\n";
         $html .= "<p><strong>Durée totale :</strong> {$this->audiolist->dureeTot} secondes</p>\n";
+        $html .= "</div>\n";
+
         $html .= "</div>\n";
 
         return $html;
