@@ -46,6 +46,9 @@ class Dispatcher {
         case 'Choice-Track':
             $html = (new action\ChoiceTrackAction())();
             break;
+        case 'Choice-Podcast':
+            $html = (new action\ChoicePodcastAction())();
+            break;
         default:
             $html = (new action\DefaultAction())();
             break;

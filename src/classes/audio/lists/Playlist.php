@@ -21,8 +21,7 @@ class Playlist extends AudioListe   {
             }
             $this->track[] = $track;
             $this->nbPistes ++;
-            $this->dureeTot += $track->duree; 
-            
+            $this->dureeTot += $track->duree;    
         }
 
         public function supprimer(int $place){
