@@ -28,7 +28,7 @@ class addTrack extends Action {
                 <title>Ajouter une piste</title>
             </head>
             <body>
-                <h1>Add Track</h1>
+                <h1>Ajout Track</h1>
                 <form action="?action=add-Track" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="titre">Titre : </label>

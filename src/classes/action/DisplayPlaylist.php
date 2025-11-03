@@ -16,7 +16,7 @@ class DisplayPlaylist extends Action {
             $html = "<div class='playlist-list'>" . $playlist . "</div>";
             return $html;
         } else {
-            return "<p>Aucune playlist disponible. Veuillez en créer une d'abord.</p>";
+            return "<p class='center'>Aucune playlist disponible. Veuillez en créer une d'abord.</p>";
         }
     }
 

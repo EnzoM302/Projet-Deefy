@@ -43,7 +43,7 @@ class ChoiceTrackAction extends Action {
             $track = DeefyRepository::getInstance()->getTrack($track_id);
             DeefyRepository::getInstance()->AjouterTrackPlaylist($id_pl, $track);
             $_SESSION['playlists']->ajouter($track);
-            return "<p>Track ajoutée avec succès à la playlist.</p><a href=\"?action=playlist&id=$id_pl\">Retour à la playlist</a>";
+            return "<p class'center'>Track ajoutée avec succès à la playlist.</p><a href=\"?action=playlist&id=$id_pl\">Retour à la playlist</a>";
 
         }
         return "Méthode non supportée.";
